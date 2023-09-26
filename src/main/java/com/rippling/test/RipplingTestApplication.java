@@ -10,4 +10,5 @@ public class RipplingTestApplication {
         SpringApplication.run(RipplingTestApplication.class, args);
     }
 
+
 }
