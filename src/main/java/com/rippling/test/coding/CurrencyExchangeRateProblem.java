@@ -24,8 +24,8 @@ public class CurrencyExchangeRateProblem {
         for(ExchangeRate exchangeRate : exchangeRates){
             adjList.putIfAbsent(exchangeRate.source,new HashMap<>());
             adjList.get(exchangeRate.source).put(exchangeRate.dest, exchangeRate.rate);
-            adjList.putIfAbsent(exchangeRate.dest,new HashMap<>());
-            adjList.get(exchangeRate.dest).put(exchangeRate.source,1/exchangeRate.rate);
+            /*adjList.putIfAbsent(exchangeRate.dest,new HashMap<>());
+            adjList.get(exchangeRate.dest).put(exchangeRate.source,1/exchangeRate.rate);*/
         }
         return adjList;
     }
