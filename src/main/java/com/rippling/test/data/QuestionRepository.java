@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class QuestionRepository {
@@ -23,7 +24,7 @@ public class QuestionRepository {
     }
 
     public List<Question> getAllQuestions(){
-        return questions.values().stream().toList();
+        return questions.values().stream().collect(Collectors.toList());
     }
 
     public Question getQuestionById(String id){
