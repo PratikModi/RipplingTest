@@ -22,11 +22,11 @@ public class Question implements Validator{
         this.content = content;
         this.createdBy = createdBy;
         this.creationTime = LocalDateTime.now();
-        this.voteCount=ThreadLocal.withInitial(()->0);
+        this.voteCount=ThreadLocal.withInitial(()-> (Integer) 0);
     }
 
     public void incrementVoteCount(){
-        this.voteCount.set(this.voteCount.get()+1);
+        this.voteCount.set(Integer.valueOf(this.voteCount.get()+1));
     }
 
     @Override
