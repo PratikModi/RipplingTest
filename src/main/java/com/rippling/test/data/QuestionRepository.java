@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 @Component
@@ -15,7 +16,7 @@ public class QuestionRepository {
     Map<String, Question> questions;
 
     public QuestionRepository() {
-        this.questions = new HashMap<>();
+        this.questions = new ConcurrentHashMap<>();
     }
 
     public Question save(Question question){
@@ -34,10 +35,10 @@ public class QuestionRepository {
         return questions.get(id);
     }
 
-    public void upVote(String id){
+    /*public void upVote(String id){
         if(!questions.containsKey(id)){
             throw new QuestionNotFoundException(id);
         }
         questions.get(id).incrementVoteCount();
-    }
+    }*/
 }

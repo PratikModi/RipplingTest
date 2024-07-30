@@ -4,17 +4,20 @@ import com.rippling.test.validator.Validator;
 import lombok.Data;
 import org.springframework.util.StringUtils;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
 public class Question implements Validator{
     private String id;
+    @NotNull
     private String title;
+    @NotNull
     private String content;
+    @NotNull
     private String createdBy;
     private LocalDateTime creationTime;
-    private ThreadLocal<Integer> voteCount;
 
     public Question(String title, String content, String createdBy) {
         this.id = UUID.randomUUID().toString();
@@ -22,11 +25,6 @@ public class Question implements Validator{
         this.content = content;
         this.createdBy = createdBy;
         this.creationTime = LocalDateTime.now();
-        this.voteCount=ThreadLocal.withInitial(()-> (Integer) 0);
-    }
-
-    public void incrementVoteCount(){
-        this.voteCount.set(Integer.valueOf(this.voteCount.get()+1));
     }
 
     @Override
