@@ -1,10 +1,13 @@
 package com.rippling.test.data;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Component
 public class VoteRepository {
 
     Map<String, Set<String>> voteMap;

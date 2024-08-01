@@ -1,6 +1,7 @@
 package com.rippling.test.service.impl;
 
 import com.rippling.test.data.QuestionRepository;
+import com.rippling.test.data.VoteRepository;
 import com.rippling.test.model.Question;
 import com.rippling.test.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,11 @@ import java.util.List;
 public class QuestionService implements IQuestionService {
 
     QuestionRepository questionRepository;
+    VoteRepository voteRepository;
     @Autowired
-    public QuestionService(QuestionRepository questionRepository) {
+    public QuestionService(QuestionRepository questionRepository,VoteRepository voteRepository) {
         this.questionRepository = questionRepository;
+        this.voteRepository= voteRepository;
     }
 
     @Override
@@ -30,5 +33,15 @@ public class QuestionService implements IQuestionService {
     @Override
     public List<Question> getAllQuestions() {
         return questionRepository.getAllQuestions();
+    }
+
+    @Override
+    public void upVote(String questionId, String userId) {
+        voteRepository.addVote(questionId, userId);
+    }
+
+    @Override
+    public Integer getVoteCount(String questionId) {
+        return voteRepository.totalVotes(questionId);
     }
 }

@@ -38,7 +38,7 @@ public class QuestionResource {
                 .toUriString();
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION,location).body(postedQuestion);
     }
-    @RequestMapping(value = "/v1/questions/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/v1/questions/{id}")
     public ResponseEntity<Question> getQuestionById(@PathVariable @NotNull String id){
         Question question=null;
         try {
@@ -50,10 +50,16 @@ public class QuestionResource {
         return ResponseEntity.ok(question);
     }
 
-    @RequestMapping(value = "/v1/questions")
+    @RequestMapping( method = RequestMethod.GET, value = "/v1/questions")
     public ResponseEntity<List<Question>> getAllQuestions(){
         List<Question> questions = questionService.getAllQuestions();
         return ResponseEntity.ok(questions);
+    }
+
+    @RequestMapping(value = "/v1/questions/{id}/votes", method = RequestMethod.GET)
+    public ResponseEntity<Integer> getVotes(@PathVariable @NotNull String id){
+        return ResponseEntity.ok(questionService.getVoteCount(id));
+        
     }
 
 }
