@@ -3,6 +3,9 @@ package com.rippling.test.api;
 import com.rippling.test.exception.QuestionNotFoundException;
 import com.rippling.test.model.Question;
 import com.rippling.test.service.IQuestionService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +28,13 @@ public class QuestionResource {
     public QuestionResource(IQuestionService questionService) {
         this.questionService = questionService;
     }
-
+    @ApiOperation(value="", nickname = "Post Questions", notes = "API to Post the questions", tags = {"postQuestions"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 400, message = "Bad Request")
+    })
     @RequestMapping(method = RequestMethod.POST, value = "/v1/questions")
-    public ResponseEntity<Question> postQuestion(@RequestBody @NonNull @Valid Question question,@RequestHeader(name = "userId", required = true) String userId){
+    public ResponseEntity<Question> postQuestions(@RequestBody @NonNull @Valid Question question,@RequestHeader(name = "userId", required = true) String userId){
         question.setCreatedBy(userId);
         System.out.println(question);
         Question postedQuestion = questionService.postQuestion(question);
