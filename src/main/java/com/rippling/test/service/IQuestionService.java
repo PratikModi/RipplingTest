@@ -10,4 +10,5 @@ public interface IQuestionService {
     List<Question> getAllQuestions();
     void upVote(String questionId, String userId);
     Integer getVoteCount(String questionId);
+    boolean hasUserVoted(String questionId, String userId);
 }

@@ -29,4 +29,13 @@ public class VoteRepository {
         }
     }
 
+    public boolean hasUserVoted(String questionId, String userId){
+        if(voteMap.containsKey(questionId)){
+            if(voteMap.containsKey(userId)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

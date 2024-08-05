@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -27,10 +28,8 @@ public class QuestionResource {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/v1/questions")
-    public ResponseEntity<Question> postQuestion(@RequestBody @NonNull Question question){
-        if(!question.validate()){
-            throw new InvalidInputException(question.toString());
-        }
+    public ResponseEntity<Question> postQuestion(@RequestBody @NonNull @Valid Question question,@RequestHeader(name = "userId", required = true) String userId){
+        question.setCreatedBy(userId);
         Question postedQuestion = questionService.postQuestion(question);
         String location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -52,6 +51,10 @@ public class QuestionResource {
 
     @RequestMapping( method = RequestMethod.GET, value = "/v1/questions")
     public ResponseEntity<List<Question>> getAllQuestions(){
+        //Talk about Pagination here
+        //Use Paging and Sorting Repository -- PagingAndSortingRepository
+        // It takes Pageable instance
+        //Pageable firstTwo = PageRequest.of(0,2); PageNumber and PageSize
         List<Question> questions = questionService.getAllQuestions();
         return ResponseEntity.ok(questions);
     }
@@ -60,6 +63,15 @@ public class QuestionResource {
     public ResponseEntity<Integer> getVotes(@PathVariable @NotNull String id){
         return ResponseEntity.ok(questionService.getVoteCount(id));
         
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/v1/questions/{id}/votes")
+    public ResponseEntity upVote(@PathVariable @NotNull String id, @RequestHeader(value = "userId", required = true) String userId){
+        if(questionService.hasUserVoted(id,userId)){
+            return ResponseEntity.badRequest().body("User already voted for question:"+id);
+        }
+        questionService.upVote(id, userId);
+        return ResponseEntity.ok().build();
     }
 
 }

@@ -44,4 +44,9 @@ public class QuestionService implements IQuestionService {
     public Integer getVoteCount(String questionId) {
         return voteRepository.totalVotes(questionId);
     }
+
+    @Override
+    public boolean hasUserVoted(String questionId, String userId) {
+        return voteRepository.hasUserVoted(questionId,userId);
+    }
 }
