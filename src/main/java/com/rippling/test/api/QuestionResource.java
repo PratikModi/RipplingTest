@@ -1,6 +1,5 @@
 package com.rippling.test.api;
 
-import com.rippling.test.exception.InvalidInputException;
 import com.rippling.test.exception.QuestionNotFoundException;
 import com.rippling.test.model.Question;
 import com.rippling.test.service.IQuestionService;
@@ -30,6 +29,7 @@ public class QuestionResource {
     @RequestMapping(method = RequestMethod.POST, value = "/v1/questions")
     public ResponseEntity<Question> postQuestion(@RequestBody @NonNull @Valid Question question,@RequestHeader(name = "userId", required = true) String userId){
         question.setCreatedBy(userId);
+        System.out.println(question);
         Question postedQuestion = questionService.postQuestion(question);
         String location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
@@ -62,16 +62,17 @@ public class QuestionResource {
     @RequestMapping(value = "/v1/questions/{id}/votes", method = RequestMethod.GET)
     public ResponseEntity<Integer> getVotes(@PathVariable @NotNull String id){
         return ResponseEntity.ok(questionService.getVoteCount(id));
-        
+
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/v1/questions/{id}/votes")
-    public ResponseEntity upVote(@PathVariable @NotNull String id, @RequestHeader(value = "userId", required = true) String userId){
-        if(questionService.hasUserVoted(id,userId)){
-            return ResponseEntity.badRequest().body("User already voted for question:"+id);
+    public ResponseEntity upVote(@PathVariable @NotNull String id, @RequestHeader(value = "userId", required = true) String userId) {
+        if (questionService.hasUserVoted(id, userId)) {
+            return ResponseEntity.badRequest().body("User already voted for question:" + id);
+        } else{
+            questionService.upVote(id, userId);
+            return ResponseEntity.ok().build();
         }
-        questionService.upVote(id, userId);
-        return ResponseEntity.ok().build();
     }
 
 }

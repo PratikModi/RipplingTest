@@ -31,7 +31,7 @@ public class VoteRepository {
 
     public boolean hasUserVoted(String questionId, String userId){
         if(voteMap.containsKey(questionId)){
-            if(voteMap.containsKey(userId)){
+            if(voteMap.get(questionId).contains(userId)){
                 return true;
             }
         }
